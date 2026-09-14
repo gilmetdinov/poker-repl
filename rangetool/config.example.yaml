@@ -1,0 +1,84 @@
+# Example rangetool session configuration.
+# Copy this file to ~/.config/rangetool/config.yaml and adjust to your game.
+
+table_size: 3
+starting_stack_bb: 15
+
+# Blind schedule: level number, big-blind chip value, duration in minutes.
+# Small blind is always half of the big blind.
+blind_schedule:
+  - level: 1
+    bb_chips: 10
+    duration_min: 5
+  - level: 2
+    bb_chips: 20
+    duration_min: 5
+  - level: 3
+    bb_chips: 30
+    duration_min: 5
+  - level: 4
+    bb_chips: 50
+    duration_min: 5
+  - level: 5
+    bb_chips: 80
+    duration_min: 5
+
+# Default villain ranges by position. Override per session with the `range` command.
+default_ranges:
+  BTN: "22+, Axo, Axs, Kxs+, Qxs+, JTs+"
+  SB: "33+, AJo+, AJs+, KQo+, KQs+, QJs+"
+  BB: "22+, Axo, Axs, K8s+, KTo+, Q9s+, QJo, JTs+"
+
+# Equity thresholds for push/limp/fold recommendations.
+thresholds:
+  push: 0.55
+  limp_upper: 0.55
+  limp_lower: 0.42
+  ev_margin: 0.02
+
+# Position-based hero push/call ranges with dynamic interpolation.
+# push = range used when hero is the aggressor (open shove, reshove, etc.).
+# call = range used when hero faces an all-in (decision to call).
+# deep_range  = starting/tight range used at or above deep_stack_bb.
+# wide_range  = widest range used at or below short_stack_bb.
+# interpolation_curve: "linear" | "threshold" | "sigmoid".
+# For "threshold", keep deep_range unchanged until tight_until_pct of deep_stack_bb,
+# then interpolate down to wide_range.
+# Below desperation_bb any two cards push.
+hero_ranges:
+  BTN:
+    deep_stack_bb: 15.0
+    short_stack_bb: 2.0
+    desperation_bb: 0.5
+    interpolation_curve: threshold
+    tight_until_pct: 0.85
+    push:
+      deep: "22+, A5s+, A8o+, KTs+, KJo+, QJs, JTs, T9s"
+      wide: "22+, Axo, Axs, K4s+, K8o+, Q8s+, QTo+, J9s+, T8s+, 98s"
+    call:
+      deep: "44+, A9s+, AJo+, KQs"
+      wide: "22+, Axo, Axs, K6s+, KTo+, Q8s+, QTo+"
+  SB:
+    deep_stack_bb: 15.0
+    short_stack_bb: 2.0
+    desperation_bb: 0.5
+    interpolation_curve: threshold
+    tight_until_pct: 0.85
+    push:
+      deep: "33+, A8s+, AJo+, KJs+, KQo, QJs"
+      wide: "22+, Axo, Axs, K5s+, K9o+, Q8s+, QTo+, J9s+, T8s+, 98s"
+    call:
+      deep: "55+, ATs+, AQo+, JJ+"
+      wide: "22+, A5s+, A9o+, KTs+, KQo, QJs"
+  BB:
+    deep_stack_bb: 15.0
+    short_stack_bb: 2.0
+    desperation_bb: 0.5
+    interpolation_curve: threshold
+    tight_until_pct: 0.85
+    push:
+      deep: "22+, Axo, Axs, Kxs+, Q8s+, QTo+, JTs+"
+      wide: "22+, Axo, Axs, Kxo, Qxs, Jxs, T8o+, 54s+"
+    call:
+      deep: "22+, A2s+, A8o+, KTs+, KJo+, QJs"
+      wide: "22+, Axo, Axs, Kxs+, QTs+, JTs"

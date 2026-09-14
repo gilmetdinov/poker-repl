@@ -1,0 +1,10 @@
+# Runtime dependencies
+# phevaluator: exact C-backed 5/6/7-card poker hand evaluator.
+phevaluator>=0.6.0
+# treys: alternative pure-Python evaluator, kept for utilities/debugging.
+treys>=0.1.1
+# PyYAML: human-readable config files for the session REPL.
+PyYAML>=6.0
+
+# Development dependencies
+pytest>=8.0.0
