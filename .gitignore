@@ -23,3 +23,7 @@ rangetool/config.yaml
 
 # OS
 .DS_Store
+
+# Рабочие заметки (не для репо; ADR в docs/adr/ — оставляем)
+docs/recap.md
+docs/config-report-to-perplexity.md
