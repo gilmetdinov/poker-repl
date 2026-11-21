@@ -1,0 +1,92 @@
+# Example rangetool session configuration (identical to the built-in defaults).
+# Copy this file to rangetool/config.yaml (or generate it with
+# `python -m rangetool.config --init-config`) and adjust it, or point the REPL
+# at another file with `python -m rangetool.repl --config PATH`.
+
+# 3 = BTN/SB/BB, 2 = heads-up (SB/BB).
+table_size: 3
+starting_stack_bb: 15
+
+# Blind schedule: level number, big-blind chip value, duration in minutes.
+# Small blind is always half of the big blind.
+blind_schedule:
+  - level: 1
+    bb_chips: 10
+    duration_min: 5
+  - level: 2
+    bb_chips: 20
+    duration_min: 5
+  - level: 3
+    bb_chips: 30
+    duration_min: 5
+  - level: 4
+    bb_chips: 50
+    duration_min: 5
+  - level: 5
+    bb_chips: 80
+    duration_min: 5
+
+# Default villain ranges by seat. Override per session with the `range` command.
+default_ranges:
+  BTN: "22+, Axo, Axs, Kxs+, Qxs+, JTs+"
+  SB: "33+, A2s+, A2o+, K2s+, KQo, QJs"
+  BB: "22+, A2s+, A2o+, K2s+, KTo+, Q2s+, QJo, JTs"
+
+# Decision thresholds. Only ev_margin (minimum EV in bb before a push is
+# recommended) and fold_equity (assumed probability that everyone folds to an
+# open shove) drive the current EV-based logic; push / limp_upper / limp_lower
+# are kept for compatibility and are not used.
+thresholds:
+  push: 0.55
+  limp_upper: 0.55
+  limp_lower: 0.42
+  ev_margin: 0.02
+  fold_equity: 0.40
+
+# Position-based hero push/call ranges with dynamic interpolation.
+# push = range used when hero is the aggressor (open shove, reshove, etc.).
+# call = range used when hero faces an all-in (decision to call).
+# deep = starting/tight range used at or above deep_stack_bb.
+# wide = widest range used at or below short_stack_bb.
+# interpolation_curve: "linear" | "threshold" | "sigmoid".
+# For "threshold", keep the deep range unchanged until tight_until_pct of
+# deep_stack_bb, then interpolate down to the wide range.
+# At or below desperation_bb any two cards are pushed.
+# Every call range must be a subset of the push range at the same depth.
+hero_ranges:
+  BTN:
+    deep_stack_bb: 15.0
+    short_stack_bb: 2.0
+    desperation_bb: 0.5
+    interpolation_curve: threshold
+    tight_until_pct: 0.85
+    push:
+      deep: "22+, A2s+, A2o+, K2s+, KTo+, Q9s+, QTo+, JTs, T9s, 98s, 87s, 76s, 65s"
+      wide: "22+, A2s+, A2o+, K2s+, K2o+, Q2s+, Q2o+, J2s+, J2o+, T2s+, T7o+, 97s+, 87s, 76s, 65s, 54s"
+    call:
+      deep: "22+, A9s+, AJo+, KQs"
+      wide: "22+, A2s+, A2o+, K2s+, KJo+, QTs+"
+  SB:
+    deep_stack_bb: 15.0
+    short_stack_bb: 2.0
+    desperation_bb: 0.5
+    interpolation_curve: threshold
+    tight_until_pct: 0.85
+    push:
+      deep: "22+, A2s+, A2o+, K2s+, K2o+, Q2s+, Q2o+, J2s+, J9o+, T8s+, 98s, 87s, 76s, 65s, 54s"
+      wide: "22+, A2s+, A2o+, K2s+, K2o+, Q2s+, Q2o+, J2s+, J2o+, T2s+, T7o+, 95s+, 87s, 76s, 65s, 54s"
+    call:
+      deep: "55+, A2s+, ATo+, KJs+, KQo"
+      wide: "22+, A2s+, A2o+, K2s+, KTo+, Q8s+, QJo, JTs"
+  BB:
+    deep_stack_bb: 15.0
+    short_stack_bb: 2.0
+    desperation_bb: 0.5
+    interpolation_curve: threshold
+    tight_until_pct: 0.85
+    push:
+      deep: "22+, A2s+, A2o+, K2s+, K2o+, Q2s+, Q8o+, J2s+, JTo, T8s+, 98s, 87s, 76s"
+      wide: "22+, A2s+, A2o+, K2s+, K2o+, Q2s+, Q2o+, J2s+, J2o+, T2s+, T7o+, 95s+, 87s, 76s, 65s, 54s"
+    call:
+      deep: "22+, A2s+, A2o+, K9s+, KJo+, QJs"
+      wide: "22+, A2s+, A2o+, K2s+, KTo+, Q8s+, JTs"

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rangetool"
+version = "0.1.0"
+description = "Offline preflop push/fold study tool: 169-hand equity matrix, range DSL and a session REPL."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "phevaluator>=0.6.0",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+rangetool = "rangetool.cli:main"
+
+[tool.setuptools]
+packages = ["rangetool"]
+
+[tool.setuptools.package-data]
+rangetool = ["data/*.json", "config.example.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["rangetool/tests"]
+pythonpath = ["."]
+
+[tool.mypy]
+ignore_missing_imports = true
